@@ -24,8 +24,8 @@ namespace AnimatedBackgroundTest1
         private Bitmap[] bubblesBitmaps;
 
         private const int NumDepths = 10;
-        private const int NumBubbles = 50;
-        private const float MaxBubbleSize = 0.2f;
+        private const int NumBubbles = 100;
+        private const float MaxBubbleSize = 0.1f;
 
         private Random rand = new Random();
 

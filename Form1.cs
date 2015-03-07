@@ -14,6 +14,7 @@ namespace AnimatedBackgroundTest1
 
     public partial class Form1 : Form
     {
+        #region BG Fields
         private Bitmap backgroundBitmap = new Bitmap("reddish bubble background.jpg");
         private Bitmap resizedBackgroundBitmap;
 
@@ -32,11 +33,14 @@ namespace AnimatedBackgroundTest1
         private const float BubbleAngleRate = 0.01f;
 
         private Random rand = new Random();
+        #endregion
 
+        #region Main Form Methods
         public Form1()
         {
             InitializeComponent();
 
+            #region BG Setup
             //Resize Bitmaps
             backgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
             bubbleBitmap = new Bitmap(bubbleBitmap, 256, 256);
@@ -59,6 +63,7 @@ namespace AnimatedBackgroundTest1
             }
             bubblesBitmaps = new Bitmap[NumDepths];
             Form1_Resize(this, new EventArgs());
+            #endregion 
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -68,6 +73,7 @@ namespace AnimatedBackgroundTest1
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+            #region BG Resize 
             for (var i = 0; i < NumDepths; i++)
             {
                 var BubSize = getBubbleSize(i);
@@ -79,14 +85,27 @@ namespace AnimatedBackgroundTest1
                 }
             }
             resizedBackgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
+            #endregion
         }
-
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             Refresh();
         }
 
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            #region BG Paint
+            e.Graphics.DrawImageUnscaled(resizedBackgroundBitmap, 0, 0);
+            for (var i = 0; i < NumBubbles; i++)
+            {
+                e.Graphics.DrawImageUnscaled(bubblesBitmaps[bubblesInfo[i].Depth], getBubblePoint(i));
+            }            
+            #endregion
+        }
+        #endregion
+
+        #region BG Methods
         private static float[][] CreateBubbleMatrix(int depth)
         {
             //Color modifiers relative to depth
@@ -103,7 +122,6 @@ namespace AnimatedBackgroundTest1
                 new [] {red, 0f, blue, 0f, 1.0f}
             };
         }
-
 
         private Size getBubbleSize(int index)
         {
@@ -155,17 +173,6 @@ namespace AnimatedBackgroundTest1
         {
             return new PointF((float)Math.Sin(Angle) * Radius * 0.5f, (float)(Math.Sin(Angle) * Radius));
         }
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawImageUnscaled(resizedBackgroundBitmap, 0, 0);
-            for (var i = 0; i < NumBubbles; i++)
-            {
-                e.Graphics.DrawImageUnscaled(bubblesBitmaps[bubblesInfo[i].Depth], getBubblePoint(i));
-            }
-        }
-
-
-
+        #endregion
     }
 }

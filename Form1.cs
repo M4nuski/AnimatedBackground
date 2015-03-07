@@ -48,7 +48,7 @@ namespace AnimatedBackgroundTest1
             bubblesInfo = new bubbleInfoStruct[NumBubbles];
             for (var i = 0; i < NumBubbles; i++)
             {
-                bubblesInfo[i] = newBubble();
+                bubblesInfo[i] = newBubble(i);
             }
 
             bubblesBitmaps = new Bitmap[NumDepths];
@@ -109,11 +109,11 @@ namespace AnimatedBackgroundTest1
             return new Size((int)w, (int)h);
         }
 
-        private bubbleInfoStruct newBubble()
+        private bubbleInfoStruct newBubble(int index)
         {
             return new bubbleInfoStruct
             {
-                Depth = rand.Next(NumDepths),
+                Depth = NumDepths * index / NumBubbles,
                 Ang = (float)(rand.NextDouble() * 2 * Math.PI),
                 PosX = (float)rand.NextDouble(),
                 PosY = (float)rand.NextDouble()

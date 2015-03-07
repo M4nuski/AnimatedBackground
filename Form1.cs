@@ -26,6 +26,10 @@ namespace AnimatedBackgroundTest1
         private const int NumDepths = 10;
         private const int NumBubbles = 100;
         private const float MaxBubbleSize = 0.1f;
+        private const float BubbleWiggle = 0.01f;
+        private const float BubbleLimit = (MaxBubbleSize+BubbleWiggle)*NumDepths;
+        private const float BubbleAdvanceRate = 0.0015f;
+        private const float BubbleAngleRate = 0.01f;
 
         private Random rand = new Random();
 
@@ -129,20 +133,20 @@ namespace AnimatedBackgroundTest1
         private Point getBubblePoint(int index)
         {
             //Move and wiggle bubbles
-            bubblesInfo[index].Ang = bubblesInfo[index].Ang + (0.01f * (NumDepths - bubblesInfo[index].Depth));
-            var offset = (0.0015f * (bubblesInfo[index].Depth + 1));
-            bubblesInfo[index].PosX = bubblesInfo[index].PosX + offset;
-            bubblesInfo[index].PosY = bubblesInfo[index].PosY - (0.5f * offset);
+            bubblesInfo[index].Ang += BubbleAngleRate * (NumDepths - bubblesInfo[index].Depth);
+            var offset = (BubbleAdvanceRate * (bubblesInfo[index].Depth + 1));
+            bubblesInfo[index].PosX += offset;
+            bubblesInfo[index].PosY -= 0.5f * offset;
 
             if (bubblesInfo[index].Ang > Math.PI * 2) { bubblesInfo[index].Ang -= (float)(Math.PI * 2); }
 
-            if ((bubblesInfo[index].PosX > (1.0f + MaxBubbleSize)) | (bubblesInfo[index].PosY < -MaxBubbleSize - 0.2f))
+            if ((bubblesInfo[index].PosX > (1.0f + MaxBubbleSize)) | (bubblesInfo[index].PosY < -BubbleLimit))
             {
                 //out of frame bubble
                 resetBubble(index);
             }
 
-            var sinOffset = getBubbleSineOffset(bubblesInfo[index].Ang, 0.01f * (1 + bubblesInfo[index].Depth));
+            var sinOffset = getBubbleSineOffset(bubblesInfo[index].Ang, BubbleWiggle * (1 + bubblesInfo[index].Depth));
 
             return new Point((int)((sinOffset.X + bubblesInfo[index].PosX) * Width), (int)((sinOffset.Y + bubblesInfo[index].PosY) * Height));
         }

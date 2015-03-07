@@ -35,6 +35,7 @@ namespace AnimatedBackgroundTest1
         private Random rand = new Random();
         #endregion
 
+        private bool fullScreen = false;
         #region Main Form Methods
         public Form1()
         {
@@ -73,7 +74,7 @@ namespace AnimatedBackgroundTest1
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            #region BG Resize 
+            #region BG Resize
             for (var i = 0; i < NumDepths; i++)
             {
                 var BubSize = getBubbleSize(i);
@@ -102,6 +103,28 @@ namespace AnimatedBackgroundTest1
                 e.Graphics.DrawImageUnscaled(bubblesBitmaps[bubblesInfo[i].Depth], getBubblePoint(i));
             }            
             #endregion
+        }
+
+        private void Form1_DoubleClick(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                //reset state to normal otherwise going borderless/fullscreen dosent cover up taskbar
+                WindowState = FormWindowState.Normal;
+            }
+            if (fullScreen)
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+                TopMost = false;
+                fullScreen = false;
+            }
+            else
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+                TopMost = true;
+                fullScreen = true;
+            }
         }
         #endregion
 
@@ -174,5 +197,7 @@ namespace AnimatedBackgroundTest1
             return new PointF((float)Math.Sin(Angle) * Radius * 0.5f, (float)(Math.Sin(Angle) * Radius));
         }
         #endregion
+
+
     }
 }

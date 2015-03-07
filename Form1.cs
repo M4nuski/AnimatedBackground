@@ -33,9 +33,11 @@ namespace AnimatedBackgroundTest1
         {
             InitializeComponent();
 
+            //Resize Bitmaps
             backgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
             bubbleBitmap = new Bitmap(bubbleBitmap, 256, 256);
 
+            //Create ColorMatrices relating depth
             bubblesAttributes = new ImageAttributes[NumDepths];
             for (var i = 0; i < NumDepths; i++)
             {
@@ -45,22 +47,19 @@ namespace AnimatedBackgroundTest1
                ColorAdjustType.Bitmap);
             }
 
+            //Create bubbles and resize all bitmaps relative to form width/height
             bubblesInfo = new bubbleInfoStruct[NumBubbles];
             for (var i = 0; i < NumBubbles; i++)
             {
                 bubblesInfo[i] = newBubble(i);
             }
-
             bubblesBitmaps = new Bitmap[NumDepths];
             Form1_Resize(this, new EventArgs());
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
-            {
-                Close();
-            }
+            if (e.KeyCode == Keys.Escape){ Close(); }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -71,10 +70,10 @@ namespace AnimatedBackgroundTest1
                 bubblesBitmaps[i] = new Bitmap(BubSize.Width, BubSize.Height);
                 using (var graph = Graphics.FromImage(bubblesBitmaps[i]))
                 {
+                    //Resize bitmaps and apply colormatrices
                     graph.DrawImage(bubbleBitmap, new Rectangle(Point.Empty, BubSize), 0, 0, 256, 256, GraphicsUnit.Pixel, bubblesAttributes[i]);
                 }
             }
-
             resizedBackgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
         }
 
@@ -86,6 +85,7 @@ namespace AnimatedBackgroundTest1
 
         private static float[][] CreateBubbleMatrix(int depth)
         {
+            //Color modifiers relative to depth
             var ratio = (float)depth / NumDepths;
             var alpha = 0.6f * ratio + 0.2f;
             var red = ratio - 1.0f;
@@ -123,11 +123,12 @@ namespace AnimatedBackgroundTest1
         private void resetBubble(int index)
         {
             bubblesInfo[index].PosX = -MaxBubbleSize;
-            bubblesInfo[index].PosY = (float)rand.NextDouble();
+            bubblesInfo[index].PosY = (float)rand.NextDouble()*1.25f;
         }
 
         private Point getBubblePoint(int index)
         {
+            //Move and wiggle bubbles
             bubblesInfo[index].Ang = bubblesInfo[index].Ang + (0.01f * (NumDepths - bubblesInfo[index].Depth));
             var offset = (0.0015f * (bubblesInfo[index].Depth + 1));
             bubblesInfo[index].PosX = bubblesInfo[index].PosX + offset;
@@ -135,9 +136,9 @@ namespace AnimatedBackgroundTest1
 
             if (bubblesInfo[index].Ang > Math.PI * 2) { bubblesInfo[index].Ang -= (float)(Math.PI * 2); }
 
-
-            if ((bubblesInfo[index].PosX > (1.2f + MaxBubbleSize)) | (bubblesInfo[index].PosY < -MaxBubbleSize - 0.2f))
+            if ((bubblesInfo[index].PosX > (1.0f + MaxBubbleSize)) | (bubblesInfo[index].PosY < -MaxBubbleSize - 0.2f))
             {
+                //out of frame bubble
                 resetBubble(index);
             }
 

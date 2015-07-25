@@ -35,10 +35,11 @@ namespace AnimatedBackgroundTest1
         private Random rand = new Random();
         #endregion
 
-        private bool fullScreen = false;
+        private bool fullScreen;
+
         #region Main Form Methods
         public Form1()
-        {
+        {   
             InitializeComponent();
 
             #region BG Setup
@@ -62,7 +63,10 @@ namespace AnimatedBackgroundTest1
             {
                 bubblesInfo[i] = newBubble(i);
             }
+            
             bubblesBitmaps = new Bitmap[NumDepths];
+
+            Resize += Form1_Resize;
             Form1_Resize(this, new EventArgs());
             #endregion 
         }
@@ -197,7 +201,6 @@ namespace AnimatedBackgroundTest1
             return new PointF((float)Math.Sin(Angle) * Radius * 0.5f, (float)(Math.Sin(Angle) * Radius));
         }
         #endregion
-
 
     }
 }

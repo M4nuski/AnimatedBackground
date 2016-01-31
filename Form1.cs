@@ -25,7 +25,7 @@ namespace AnimatedBackgroundTest1
         private Bitmap[] bubblesBitmaps;
 
         private const int NumDepths = 10;
-        private const int NumBubbles = 100;
+        private const int NumBubbles = 256;
         private const float MaxBubbleSize = 0.1f;
         private const float BubbleWiggle = 0.01f;
         private const float BubbleLimit = (MaxBubbleSize+BubbleWiggle)*NumDepths;

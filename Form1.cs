@@ -82,6 +82,7 @@ namespace AnimatedBackgroundTest1
             for (var i = 0; i < NumDepths; i++)
             {
                 var BubSize = getBubbleSize(i);
+                if (bubblesBitmaps[i] != null) bubblesBitmaps[i].Dispose();
                 bubblesBitmaps[i] = new Bitmap(BubSize.Width, BubSize.Height);
                 using (var graph = Graphics.FromImage(bubblesBitmaps[i]))
                 {
@@ -89,6 +90,7 @@ namespace AnimatedBackgroundTest1
                     graph.DrawImage(bubbleBitmap, new Rectangle(Point.Empty, BubSize), 0, 0, 256, 256, GraphicsUnit.Pixel, bubblesAttributes[i]);
                 }
             }
+            if (resizedBackgroundBitmap != null) resizedBackgroundBitmap.Dispose();
             resizedBackgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
             #endregion
         }

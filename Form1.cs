@@ -15,19 +15,20 @@ namespace AnimatedBackgroundTest1
     public partial class Form1 : Form
     {
         #region BG Fields
-        private Bitmap backgroundBitmap = new Bitmap("reddish bubble background.jpg");
+        private Bitmap backgroundBitmap = Properties.Resources._Background;
+
         private Bitmap resizedBackgroundBitmap;
 
         private bubbleInfoStruct[] bubblesInfo;
         private ImageAttributes[] bubblesAttributes;
 
-        private Bitmap bubbleBitmap = new Bitmap("1024RedCircle.png");
+        private Bitmap bubbleBitmap = Properties.Resources._1024RedCircle;
         private Bitmap[] bubblesBitmaps;
 
         private const int NumDepths = 10;
-        private const int NumBubbles = 256;
+        private const int NumBubbles = 128;
         private const float MaxBubbleSize = 0.1f;
-        private const float BubbleWiggle = 0.01f;
+        private const float BubbleWiggle = 0.02f;
         private const float BubbleLimit = (MaxBubbleSize+BubbleWiggle)*NumDepths;
         private const float BubbleAdvanceRate = 0.0015f;
         private const float BubbleAngleRate = 0.01f;

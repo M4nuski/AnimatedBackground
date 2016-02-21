@@ -91,7 +91,7 @@ namespace AnimatedBackgroundTest1
                     graph.DrawImage(bubbleBitmap, new Rectangle(Point.Empty, BubSize), 0, 0, 256, 256, GraphicsUnit.Pixel, bubblesAttributes[i]);
                 }
             }
-            if (resizedBackgroundBitmap != null) resizedBackgroundBitmap.Dispose();
+            resizedBackgroundBitmap?.Dispose();
             resizedBackgroundBitmap = new Bitmap(backgroundBitmap, Width, Height);
             #endregion
         }
